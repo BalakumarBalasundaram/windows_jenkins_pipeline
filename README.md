@@ -3,9 +3,9 @@
 # Syntax to call the Jenkins pipeline from workflow
 def job = build job: 'say-hello', parameters: [[$class: 'StringParameterValue', name: 'who', value: 'DZone Readers']]
 
+
 pipeline {
     agent any
-
     parameters {
         booleanParam(defaultValue: true, description: '', name: 'booleanExample')
         string(defaultValue: "TEST", description: 'What environment?', name: 'stringExample')
@@ -36,6 +36,31 @@ pipeline {
         stage('Example') {
             steps {
                 echo 'Hello World'
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    parameters {
+      string(name: 'PLANET', defaultValue: 'Earth', description: 'Which planet are we on?')
+      string(name: 'GREETING', defaultValue: 'Hello', description: 'How shall we greet?')
+    }
+    triggers {
+        cron('* * * * *')
+        parameterizedCron('''
+# leave spaces where you want them around the parameters. They'll be trimmed.
+# we let the build run with the default name
+*/2 * * * * %GREETING=Hola;PLANET=Pluto
+*/3 * * * * %PLANET=Mars
+        ''')
+    }
+    stages {
+        stage('Example') {
+            steps {
+                echo "${GREETING} ${PLANET}"
+                script { currentBuild.description = "${GREETING} ${PLANET}" }
             }
         }
     }
