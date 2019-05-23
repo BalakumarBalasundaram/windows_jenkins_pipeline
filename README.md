@@ -4,6 +4,30 @@ DEPLOY TO PROD CHOICE VARIABLE HANDLING
 
 https://github.com/davsuapas/DanceSchool-CloudPipeline/blob/e6fe6facea22b8eaa37796bb3d48014d73b338fa/declarative-pipeline/src/main/resources/Jenkinsfile-sample
 
+  parameters {
+        booleanParam(name: 'Destroy_VM', defaultValue: true)
+        booleanParam(name: 'Hoot_provision', defaultValue: true)
+        booleanParam(name: 'Configure_Tests', defaultValue: false)
+        booleanParam(name: 'Build', defaultValue: true)
+        booleanParam(name: 'Core_tests', defaultValue: true)
+        booleanParam(name: 'Services_tests', defaultValue: true)
+        booleanParam(name: 'UI_hoot1_tests', defaultValue: true)
+        booleanParam(name: 'UI_hoot2_tests', defaultValue: true)
+        booleanParam(name: 'Sonar', defaultValue: false)
+        string(name: 'Box', defaultValue: 'default', description: 'Vagrant Box')
+    }
+
+PARAMS VARIABLE IN WHEN EXPRESSION
+    stages {
+        stage("Destroy VM") {
+            when { expression { return params.Destroy_VM } }
+            steps {
+                // Existing VM may or may not exist depending on previous runs
+                sh "vagrant destroy -f ${params.Box} || true"
+            }
+        }
+stage("Setup") {
+
 # Syntax to call the Jenkins pipeline from workflow
 def job = build job: 'say-hello', parameters: [[$class: 'StringParameterValue', name: 'who', value: 'DZone Readers']]
 
