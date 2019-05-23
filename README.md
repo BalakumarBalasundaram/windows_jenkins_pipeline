@@ -1,5 +1,9 @@
 # windows_jenkins_pipeline
 
+DEPLOY TO PROD CHOICE VARIABLE HANDLING
+
+https://github.com/davsuapas/DanceSchool-CloudPipeline/blob/e6fe6facea22b8eaa37796bb3d48014d73b338fa/declarative-pipeline/src/main/resources/Jenkinsfile-sample
+
 # Syntax to call the Jenkins pipeline from workflow
 def job = build job: 'say-hello', parameters: [[$class: 'StringParameterValue', name: 'who', value: 'DZone Readers']]
 
