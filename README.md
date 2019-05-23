@@ -2,6 +2,16 @@
 
 DEPLOY TO PROD CHOICE VARIABLE HANDLING
 
+env.DEPLOY_TO_PROD = input message: '', parameters: [
+						choice(
+							name: 'Deploy to prod?',
+							choices: 'no\nyes',
+							description: 'Choose "yes" if you want to deploy this build to production'
+						)
+]
+
+when { expression { return params.Hoot_provision } }
+
 https://github.com/davsuapas/DanceSchool-CloudPipeline/blob/e6fe6facea22b8eaa37796bb3d48014d73b338fa/declarative-pipeline/src/main/resources/Jenkinsfile-sample
 
   parameters {
